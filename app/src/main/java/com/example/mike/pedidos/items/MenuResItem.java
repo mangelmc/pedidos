@@ -1,15 +1,25 @@
 package com.example.mike.pedidos.items;
 
 public class MenuResItem {
-    private String restaurant,nombre,descripcion,foto;
+    private String restaurant,nombre,descripcion,foto,id;
     private Double precio;
 
-    public MenuResItem(String restaurant, String nombre, String descripcion, String foto, Double precio) {
+    public MenuResItem(String restaurant, String nombre,  String foto, Double precio,String id) {
         this.restaurant = restaurant;
         this.nombre = nombre;
-        this.descripcion = descripcion;
+        this.descripcion = "descripcion";
         this.foto = foto;
         this.precio = precio;
+        this.id = id;
+
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getRestaurant() {
