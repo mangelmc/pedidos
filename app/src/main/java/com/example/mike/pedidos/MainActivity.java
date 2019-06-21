@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.AlteredCharSequence;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -245,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             sendData();
         }
         if (v.getId() == R.id.tomarFoto){
+            Snackbar.make(v,"Message",Snackbar.LENGTH_LONG).show();
             cargarImagen();
         }
     }
@@ -265,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }else{
                     if (opciones[i].equals("Cargar Imagen")){
                         Intent intent=new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        intent.setType("image/");
+                        intent.setType("image/*");
                         startActivityForResult(intent.createChooser(intent,"Seleccione la Aplicación"),COD_GALERIA);
                     }else{
                         dialogInterface.dismiss();
@@ -285,7 +287,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Uri fileuri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", file);
+
             camera.putExtra(MediaStore.EXTRA_OUTPUT, fileuri);
+            //BuildConfig.APPLICATION_ID + ".provider"
         } else {
             camera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
         }
@@ -307,6 +311,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case COD_CAMERA:
                     loadImageCamera();
+
+
+                    break;
             }
         }
     }

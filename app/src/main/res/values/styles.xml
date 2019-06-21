@@ -6,6 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        
+        <item name="android:windowContentTransitions">true</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -16,5 +19,28 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="RaisedButtonDark" parent="Theme.AppCompat.Light">
+        <item name="colorButtonNormal">@color/colorPrimaryDark</item>
+
+
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <item name="android:textColor">@android:color/white</item>
+
+
+    </style>
+
+    <style name="EditTextDark" parent="TextAppearance.AppCompat">
+        <item name="android:textColorHint">@color/colorGreen</item>
+        <item name="android:colorControlNormal">@color/colorGreen</item>
+        <item name="android:colorControlActivated">@color/colorGreen</item>
+        <item name="android:textColorPrimary">@color/colorGreen</item>
+        <item name="android:colorAccent">@color/colorGreen</item>
+        <item name="android:textColor">@color/colorGreen</item>
+        <!--<item name="app:"></item>-->
+    </style>
+
+    
+
 
 </resources>

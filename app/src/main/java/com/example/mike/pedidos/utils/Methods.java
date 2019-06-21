@@ -39,6 +39,7 @@ public  class Methods {
 
         return false;
     }
+
     public static class FileAndPath{
         File file;
         String path;
@@ -54,6 +55,7 @@ public  class Methods {
             return path;
         }
     }
+
     public static FileAndPath createFile(String path) {
         //Logica de creado
         File file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES);
