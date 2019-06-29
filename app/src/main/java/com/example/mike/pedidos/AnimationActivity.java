@@ -91,6 +91,7 @@ public class AnimationActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
+
         Intent intent = new Intent(this, AnimationsActivity.class);
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this);
         switch (v.getId()) {
