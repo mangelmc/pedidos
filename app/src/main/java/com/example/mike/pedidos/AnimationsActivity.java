@@ -1,6 +1,6 @@
 package com.example.mike.pedidos;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.transition.Explode;
 import android.transition.Fade;
@@ -9,9 +9,7 @@ import android.transition.Slide;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AnticipateOvershootInterpolator;
-import android.view.animation.BounceInterpolator;
 
 import android.widget.Button;
 

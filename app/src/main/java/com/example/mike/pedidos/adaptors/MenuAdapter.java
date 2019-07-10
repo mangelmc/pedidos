@@ -2,27 +2,25 @@ package com.example.mike.pedidos.adaptors;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.mike.pedidos.MainActivity;
 import com.example.mike.pedidos.R;
 import com.example.mike.pedidos.items.MenuResItem;
 import com.example.mike.pedidos.utils.Data;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,7 +55,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MenuViewHolder holder, final int position) {
-        holder.setData(listData.get(position));
+        holder.setData(listData.get(position),position);
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,33 +77,69 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     public class MenuViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView nombre,precio,descripcion;
         ImageView foto;
-        Button btnBorrar;
+        TextView btnMore;
         String id,idRestaurant;
+        int position;
+        MenuResItem currentItem;
         private ConstraintLayout parentLayout;
 
         public MenuViewHolder(View itemView) {
             super(itemView);
-            nombre = itemView.findViewById(R.id.textNombre);
+            nombre = itemView.findViewById(R.id.textDescripcion);
             precio = itemView.findViewById(R.id.textPrecio);
             foto = itemView.findViewById(R.id.imageFoto);
-            btnBorrar = itemView.findViewById(R.id.btnBorrar);
-            btnBorrar.setOnClickListener(this);
+            btnMore = itemView.findViewById(R.id.btnMore);
+            btnMore.setOnClickListener(this);
+
             //nombre = itemView.findViewById(R.id.textNombre);
 
             parentLayout = itemView.findViewById(R.id.parent_layout);
 
         }
 
-        public void setData(MenuResItem item) {
-            nombre.setText(item.getNombre());
-            precio.setText(item.getPrecio().toString());
-            Glide.with(context).load(Data.URL_IMG + item.getFoto()).into(foto);
-            id = item.getId();
+        public void setData(MenuResItem currentItem,int position) {
+            nombre.setText(currentItem.getNombre());
+            precio.setText(currentItem.getPrecio().toString());
+            Glide.with(context).load(/*Data.URL_IMG + */currentItem.getFoto()).into(foto);//delete for service load
+            id = currentItem.getId();
+
+            this.position = position;
+            this.currentItem = currentItem;
 
         }
 
         @Override
         public void onClick(View v) {
+            //creating a popup menu
+            PopupMenu popup = new PopupMenu(context, btnMore);
+            //inflating menu from xml resource
+            popup.inflate(R.menu.menu_options_menu);
+            //adding click listener
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.menu1:
+                            //handle menu1 click
+
+                            removeItem(position);
+                            return true;
+                        case R.id.menu2:
+                            //handle menu2 click
+                            addItem(position,currentItem);
+                            return true;
+                        case R.id.menu3:
+                            //handle menu3 click
+                            return true;
+                        default:
+                            return false;
+                    }
+                }
+            });
+            //displaying the popup
+            popup.show();
+
+            /*
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             // Add the buttons
             builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
@@ -123,6 +157,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
             AlertDialog dialog = builder.create();
             dialog.show();
+            */
 
 
 
@@ -151,6 +186,42 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
                 }
 
             });
+        }
+        public void removeItem(final int position) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setIcon(R.drawable.ic_food);
+            builder.setMessage("Any message");
+            builder.setTitle("Esta seguro de eliminar el menu ?");
+
+            // Add the buttons
+            builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User clicked OK button
+                    listData.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, listData.size());
+
+                }
+            });
+            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                }
+            });
+
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+
+//		notifyDataSetChanged();
+        }
+        public void addItem(int position, MenuResItem currentObject) {
+            listData.add(position, currentObject);
+            notifyItemInserted(position);
+            notifyItemRangeChanged(position, listData.size());
+//		notifyDataSetChanged();
+
         }
     }
 
